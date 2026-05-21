@@ -11,7 +11,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #15151a;
     --fg: #e8e6e1;
     --muted: #9a9a9a;
@@ -19,6 +19,42 @@
     --accent: #e8845a;
     --code-bg: #1e1e26;
   }
+}
+
+:root[data-theme="dark"] {
+  --bg: #15151a;
+  --fg: #e8e6e1;
+  --muted: #9a9a9a;
+  --rule: #2a2a32;
+  --accent: #e8845a;
+  --code-bg: #1e1e26;
+}
+
+.theme-toggle {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  border-radius: 999px;
+  width: 1.85rem;
+  height: 1.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.15s, border-color 0.15s;
+}
+.theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .icon-moon { display: inline; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: inline; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: inline; }
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
 }
 
 * { box-sizing: border-box; }
@@ -65,6 +101,7 @@ body {
   font-family: var(--sans);
   font-size: 0.9rem;
   display: flex;
+  align-items: center;
   gap: 1.25rem;
 }
 .site-nav a {
