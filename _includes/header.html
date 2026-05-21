@@ -1,0 +1,11 @@
+<header class="site-header wrap">
+  <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+  <nav class="site-nav">
+    {%- for path in site.header_pages -%}
+      {%- assign p = site.pages | where: "path", path | first -%}
+      {%- if p -%}
+        <a href="{{ p.url | relative_url }}">{{ p.title }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+  </nav>
+</header>

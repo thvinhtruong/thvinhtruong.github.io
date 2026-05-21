@@ -1,0 +1,15 @@
+---
+layout: default
+---
+<section class="intro">
+  {{ content }}
+</section>
+
+<ul class="post-list">
+  {%- for post in site.posts -%}
+    <li>
+      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: site.date_format }}</time>
+      <a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+    </li>
+  {%- endfor -%}
+</ul>

@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Create a new blog post.
+#   bin/new-post "My post title"           # tags/categories empty
+#   bin/new-post "Title" -t go,notes       # comma-separated tags
+#   bin/new-post "Title" -c dev -t go,cli  # category + tags
+set -euo pipefail
+
+if [[ $# -lt 1 ]]; then
+  echo "usage: $0 \"Post title\" [-c cat1,cat2] [-t tag1,tag2]" >&2
+  exit 1
+fi
+
+title="$1"; shift
+cats=""
+tags=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -c) cats="$2"; shift 2 ;;
+    -t) tags="$2"; shift 2 ;;
+    *)  echo "unknown arg: $1" >&2; exit 1 ;;
+  esac
+done
+
+# slugify: lowercase, non-alnum -> dash, squeeze, trim
+slug=$(echo "$title" \
+  | tr '[:upper:]' '[:lower:]' \
+  | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')
+
+date=$(date +%Y-%m-%d)
+ts=$(date +"%Y-%m-%d %H:%M:%S %z")
+repo_root="$(cd "$(dirname "$0")/.." && pwd)"
+file="$repo_root/_posts/${date}-${slug}.md"
+
+if [[ -e "$file" ]]; then
+  echo "exists: $file" >&2
+  exit 1
+fi
+
+# turn "a,b,c" into "[a, b, c]"
+yaml_list() {
+  local raw="$1"
+  [[ -z "$raw" ]] && { echo "[]"; return; }
+  echo "[$(echo "$raw" | sed 's/,/, /g')]"
+}
+
+mkdir -p "$repo_root/_posts"
+cat > "$file" <<EOF
+---
+title: "${title//\"/\\\"}"
+date: ${ts}
+categories: $(yaml_list "$cats")
+tags: $(yaml_list "$tags")
+---
+
+EOF
+
+echo "$file"
