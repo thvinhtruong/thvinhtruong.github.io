@@ -3,6 +3,7 @@ description: A place for my notes and thoughts.
 author: Vinh Truong
 email: vinhtr.ct@gmail.com
 url: "https://thvinhtruong.github.io"
+repository: thvinhtruong/thvinhtruong.github.io
 
 markdown: kramdown
 highlighter: rouge
