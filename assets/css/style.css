@@ -70,6 +70,10 @@ body {
   line-height: 1.65;
   font-feature-settings: "kern", "liga", "onum";
   text-rendering: optimizeLegibility;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  body { transition: none; }
 }
 
 .wrap {
