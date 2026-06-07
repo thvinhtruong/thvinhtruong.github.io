@@ -18,3 +18,19 @@ layout: default
     {{ content }}
   </div>
 </article>
+{%- if page.mermaid -%}
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  // kramdown renders ```mermaid fences as <pre><code class="language-mermaid">.
+  // Mermaid expects <div class="mermaid">, so rewrite them first.
+  document.querySelectorAll('pre > code.language-mermaid').forEach(function (code) {
+    var div = document.createElement('div');
+    div.className = 'mermaid';
+    div.textContent = code.textContent;
+    code.parentElement.replaceWith(div);
+  });
+  var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+  await mermaid.run();
+</script>
+{%- endif -%}
