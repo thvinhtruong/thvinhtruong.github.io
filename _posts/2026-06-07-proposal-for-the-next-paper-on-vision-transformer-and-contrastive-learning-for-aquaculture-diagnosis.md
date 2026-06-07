@@ -3,6 +3,7 @@ title: "Proposal for the Next Paper on Vision Transformer and Contrastive Learni
 date: 2026-06-07 17:05:38 +0200
 categories: [research]
 tags: [vision-transformer, self-supervised-learning, xai, edge-deployment, aquaculture]
+mermaid: true
 ---
 
 
@@ -39,6 +40,21 @@ The paper should contribute in three layers:
 This combination is the most publishable because many papers cover only one of these topics in isolation, while the joint formulation is still sparse in aquaculture and agricultural health monitoring.
 
 ## Proposed Methodology
+
+The four stages form a single pipeline from unlabeled imagery to explainable edge inference:
+
+```mermaid
+flowchart LR
+  A["Unlabeled aquaculture images"] --> B["SimCLR pretraining"]
+  B --> C["ViT-Small teacher"]
+  C -->|"fine-tune on 4-class labels"| D["Teacher classifier"]
+  D -->|"knowledge distillation"| E["MobileViT student"]
+  E --> F["INT8 quantization"]
+  F --> G["Edge inference (Raspberry Pi / Jetson)"]
+  D --> H["XAI: Rollout / Grad-CAM / GMAR"]
+  E --> H
+  H --> I["Disease-region saliency check"]
+```
 
 ### Stage 1: Teacher Model
 
